@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script type="text/javascript">
+    // function to get subId
+    function getSubId() {
+      // store current url page into a variable
+      var string_url = window.location;
+      //create a new URL object
+      var urlObject = new URL(string_url);
+      // get the url paramenters
+      var subid = urlObject.searchParams.get('subid');
+      return subid;
+    }
+
+    var uid;
+    var subid = getSubId();
+
+    // fetch the url page that cointains user id
+    fetch('https://loadr.exelator.com/load/?p=1316&g=101&j=jf', {
+        credentials: "include"
+      })
+
+      .then((response) => response.json())
+      .then((data) => {
+        // uid and subid to append to the php file to could then get the 2 parameters and save them in the DB
+        uid = data.user.uid;
+        var subid = getSubId();
+        return fetch('http://clients.tomorrowtth.com/attribution/gentingbet/process.php?uid=' + uid + '&subid=' + subid, {})
+      })
+      .then((response) => response.text())
+      .then((data) => {
+        console.log(subid);
+        addSubIdToRed(subid);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+
+    // function to redirect and append the subid to the redirected url
+    function addSubIdToRed(subIdToStr) {
+      var subid = getSubId();
+      var redUrl = "http://wlgentingaffiliates.adsrv.eacdn.com/C.ashx?btag=a_24826b_13848c_&affid=19151&siteid=24826&adid=13848";
+      var subIdReditect = redUrl + '&subid=' + subid;
+      console.log(subIdReditect);
+      window.location.href = subIdReditect;
+    }
+  </script>
+  <title></title>
+</head>
+
+<body>
+
+</body>
+
+</html>
